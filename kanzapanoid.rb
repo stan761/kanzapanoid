@@ -83,7 +83,7 @@ class Game < Window
 		@camera_x = @camera_y = 0
 
 		@map = VectorMap.new self
-		@map.open 'test'
+		@map.open 'kanzapanoid one'
 	end
 
 	def update
