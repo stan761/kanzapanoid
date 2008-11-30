@@ -9,9 +9,12 @@ end
 require 'gosu'
 include Gosu
 
-SCREEN_WIDTH = 640
-SCREEN_HEIGHT = 480
+module Screen
+	Width = 640
+	Height = 480
+end
 
+$LOAD_PATH.push 'lib/'
 require 'vectormap'
 
 # Layering of sprites
@@ -23,7 +26,7 @@ class Game < Gosu::Window
 	attr_reader :mapFile, :layers, :camera_x, :camera_y
 
 	def initialize
-		super(SCREEN_WIDTH, SCREEN_HEIGHT, false)
+		super(Screen::Width, Screen::Height, false)
 		self.caption = "Kanzapanoid Map Editor"
 
 		# Put the beep here, as it is the environment now that determines collision
@@ -34,14 +37,14 @@ class Game < Gosu::Window
 		@font = Gosu::Font.new(self, Gosu::default_font_name, 20)
 
 		# Scrolling is stored as the position of the top left corner of the screen.
-		@camera_x,  @camera_y = 0,0
+		@camera_x, @camera_y = 0,0
 
 		@mode = 0
 		@mouseColors = [0xffffffff, 0xff00ff00, 0xff0000ff]
 
 		@mapFile = ''
 
-		@editor = PolyEditor.new self
+		@editor = MapEditor.new self
 		@input = TextField.new self, 'Map Name?'
 	end
 
@@ -106,7 +109,7 @@ class Game < Gosu::Window
 	end
 end
 
-class PolyEditor
+class MapEditor
 	attr_reader :map
 
 	def initialize(window)
@@ -198,7 +201,7 @@ class TextField < Gosu::TextInput
 
 		@x, @y = 10, 10
 		@font = Gosu::Font.new(@window, Gosu::default_font_name, 20)
-		@width = SCREEN_WIDTH - (PADDING * 4)
+		@width = Screen::Width - (PADDING * 4)
 		@height = @font.height
 
 		@defaultText = defaultText
